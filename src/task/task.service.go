@@ -63,14 +63,17 @@ func DeleteTaskService(w http.ResponseWriter, taskId string, userId uint) {
 }
 
 func UpdateTaskService(w http.ResponseWriter, task task_entity.Task, userId uint) {
-	var newTask task_entity.Task
-	mysql.DB.First(&newTask, "id = ? AND user_is = ?", task.ID, userId)
-	
-	if newTask.ID == 0 {
+	var oldTask task_entity.Task
+	mysql.DB.First(&oldTask, "id = ? AND user_id = ?", task.ID, userId)
+
+	if oldTask.ID == 0 {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte("Task not found"))
 		return
 	}
-	newTask = task
-	mysql.DB.Save(&newTask)
+	
+	mysql.DB.Save(&task)
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Task updated"))
 }

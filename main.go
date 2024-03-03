@@ -37,6 +37,7 @@ func main() {
 	taskRoutes.HandleFunc("", task.FindAllTaskController).Methods("GET")
 	taskRoutes.HandleFunc("/{id}", task.FindTaskController).Methods("GET")
 	taskRoutes.HandleFunc("/{id}", task.DeleteTaskController).Methods("DELETE")
+	taskRoutes.HandleFunc("/{id}", task.UpdateTaskController).Methods("PUT")
 
 	router.PathPrefix("/api/task").Handler(taskRoutes)
 
