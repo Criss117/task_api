@@ -30,6 +30,7 @@ func main() {
 	router.HandleFunc("/api/user/login", auth.LoginController).Methods("POST")
 	router.HandleFunc("/api/user", user.CreateUserController).Methods("POST")
 
+	//private
 	taskRoutes := mux.NewRouter().PathPrefix("/api/task").Subrouter()
 	taskRoutes.Use(auth_middleware.LoggingMiddleware)
 
@@ -40,11 +41,6 @@ func main() {
 	taskRoutes.HandleFunc("/{id}", task.UpdateTaskController).Methods("PUT")
 
 	router.PathPrefix("/api/task").Handler(taskRoutes)
-
-	// r.HandleFunc("/api/tasks", task.FindAllTaskController).Methods("GET")
-	// r.HandleFunc("/api/tasks", task.FindTaskController).Methods("GET")
-	// r.HandleFunc("/api/tasks", task.FindAllTaskController).Methods("GET")
-	// r.HandleFunc("/api/tasks", task.FindAllTaskController).Methods("GET")
 
 	http.ListenAndServe(":8080", router)
 }
